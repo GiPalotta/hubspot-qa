@@ -3,15 +3,14 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>HubSpot Docs Q&A</title>
+  <title>HubSpot API Q&A</title>
   <style>
     *{box-sizing:border-box}
     body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu; margin:0; padding:24px; background:#0b0f14; color:#e6eef8}
     h1{font-size:22px; margin:0 0 16px}
     .card{max-width:900px; margin:0 auto; background:#121822; border:1px solid #1f2a3a; border-radius:14px; padding:20px; box-shadow:0 10px 30px rgba(0,0,0,.25)}
     label{display:block; font-weight:600; margin:10px 0 6px}
-    input[type=text], input[type=url], textarea{width:100%; padding:12px 14px; border-radius:10px; border:1px solid #2b3a52; background:#0e151f; color:#e6eef8}
-    textarea{min-height:130px; resize:vertical}
+    textarea{width:100%; padding:12px 14px; border-radius:10px; border:1px solid #2b3a52; background:#0e151f; color:#e6eef8; min-height:130px; resize:vertical}
     button{padding:10px 16px; border-radius:10px; border:0; background:#3b82f6; color:white; font-weight:600; cursor:pointer}
     button[disabled]{opacity:.6; cursor:not-allowed}
     .muted{color:#a8b3c7; font-size:13px}
@@ -23,11 +22,8 @@
 </head>
 <body>
   <div class="card">
-    <h1>HubSpot Docs Q&amp;A</h1>
-    <p class="muted">Cole abaixo a URL pública do seu <strong>Webhook do n8n</strong> (POST) e faça perguntas sobre a documentação da HubSpot.</p>
-    
-    <label for="endpoint">Webhook URL</label>
-    <input type="url" id="endpoint" placeholder="https://SEU-N8N/webhook/..." />
+    <h1>HubSpot API Q&amp;A</h1>
+    <p class="muted">Digite sua pergunta sobre a API do HubSpot abaixo e receba a resposta diretamente.</p>
     
     <label for="question">Pergunta</label>
     <textarea id="question" placeholder="Ex.: Como autentico minha aplicação ao chamar a API do HubSpot?"></textarea>
@@ -41,25 +37,24 @@
   </div>
 
 <script>
-  const endpointInput = document.getElementById('endpoint');
+  const WEBHOOK_URL = "https://n8n.heavensttwr.com.br/webhook/015bf0b0-754d-42d7-a1ce-a216b4136d48";
+
   const qInput = document.getElementById('question');
   const askBtn = document.getElementById('askBtn');
   const out = document.getElementById('answer');
   const status = document.getElementById('status');
 
   async function ask() {
-    const url = endpointInput.value.trim();
     const question = qInput.value.trim();
     out.textContent = '';
     status.textContent = '';
-    if (!url) { alert('Informe a URL do webhook do n8n.'); return; }
     if (!question) { alert('Escreva uma pergunta.'); return; }
 
     askBtn.disabled = true;
     status.textContent = 'Enviando...';
 
     try {
-      const res = await fetch(url, {
+      const res = await fetch(WEBHOOK_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ question })
